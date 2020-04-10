@@ -4,8 +4,17 @@ using System.Linq;
 using System.Text;
 
 namespace FileIdCreator {
+    /// <summary>
+    /// create/read/update/delete bytes that represent id in the end of the file. 
+    /// Id format "###0000000000###"
+    /// </summary>
     public class FileId {
 
+        /// <summary>
+        /// add 16 bytes id in the end of the file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="id"></param>
         public static void addID(string path, long id) {
             Guard.throwIfStringNullOrEmpty(path,nameof(path));
 
@@ -14,6 +23,11 @@ namespace FileIdCreator {
             appendAllBytes(path, b);
         }
 
+        /// <summary>
+        /// read only last 16 bytes of the file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>id or null if last 16 bytes doesn't meet the pattern of id - ###0000000000###</returns>
         public static string getID(string path) {
             Guard.throwIfStringNullOrEmpty(path, nameof(path));
 
@@ -30,6 +44,10 @@ namespace FileIdCreator {
             }
         }
 
+        /// <summary>
+        /// deleting last 16 bytes of the file while they meet the pattern of id - ###0000000000###
+        /// </summary>
+        /// <param name="path"></param>
         public static void deleteID(string path) {
             Guard.throwIfStringNullOrEmpty(path, nameof(path));
 
@@ -38,6 +56,11 @@ namespace FileIdCreator {
             }
         }
 
+        /// <summary>
+        /// deleting last 16 bytes of the file while they meet the pattern of id - ###0000000000###,
+        /// add 16 bytes id in the end of the file
+        /// </summary>
+        /// <param name="path"></param>
         public static void updateID(string path, long id) {
             Guard.throwIfStringNullOrEmpty(path, nameof(path));
 
@@ -49,6 +72,11 @@ namespace FileIdCreator {
             return id != null && id.Length == 16 && id.StartsWith("###") && id.EndsWith("###") && id.Substring(3, 10).ToList().TrueForAll((x) => int.TryParse(x.ToString(), out int num));
         }
 
+        /// <summary>
+        /// delete bytes from the end of the file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="bytesNumber">number of bytes to delete</param>
         private static void deleteBytes(string path, int bytesNumber) {
             Guard.throwIfStringNullOrEmpty(path, nameof(path));
 
@@ -59,6 +87,11 @@ namespace FileIdCreator {
             }
         }
 
+        /// <summary>
+        /// append bytes in the end of the file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="bytes"></param>
         private static void appendAllBytes(string path, byte[] bytes) {
             Guard.throwIfStringNullOrEmpty(path, nameof(path));
             Guard.throwIfNull(bytes, nameof(bytes));
