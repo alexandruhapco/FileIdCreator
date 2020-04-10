@@ -56,7 +56,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FileIdCretor\FileIdCreator.csproj">
+    <ProjectReference Include="..\FileIdCreator\FileIdCreator.csproj">
       <Project>{CB9A4FE2-7425-48C4-9BC6-F2307597CE6C}</Project>
       <Name>FileIdCreator</Name>
     </ProjectReference>
