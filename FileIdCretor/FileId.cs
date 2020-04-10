@@ -29,8 +29,27 @@ namespace FileIdCreator
             }
         }
 
+        public static void deleteID(string path) {
+            while (getID(path) != null) {
+                deleteBytes(path, 16);
+            }
+        }
+
+        public static void updateID(string path, long id) {
+            deleteID(path);
+            addID(path, id);
+        }     
+
         private static bool isID(string id) {
             return id != null && id.Length == 16 && id.StartsWith("###") && id.EndsWith("###") && id.Substring(3, 10).ToList().TrueForAll((x) => int.TryParse(x.ToString(), out int num));
+        }
+
+        private static void deleteBytes(string path, int bytesNumber) {
+            var fi = new FileInfo(path);
+            using (var fs = fi.Open(FileMode.Open)) {
+                fs.SetLength(Math.Max(0, fi.Length - bytesNumber));
+                fs.Close();
+            }
         }
 
         private static void appendAllBytes(string path, byte[] bytes) {         
