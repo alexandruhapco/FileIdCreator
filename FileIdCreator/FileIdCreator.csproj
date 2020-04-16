@@ -41,8 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileId.cs" />
-    <Compile Include="Guard.cs" />
+    <Compile Include="FileIdController.cs" />
+    <Compile Include="Util\Guard.cs" />
+    <Compile Include="IFileIdController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

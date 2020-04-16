@@ -1,12 +1,11 @@
 ﻿using FileIdCreator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace FileIdCreatorTest {
     [TestClass]
-    public class FileIdTest {
+    public class FileIdControllerTest {
 
         const string pathInit = "TestFile/dummy.pdf";
         const string path = "TestFile/dummyTest.pdf";
@@ -22,27 +21,30 @@ namespace FileIdCreatorTest {
         }
 
         [TestMethod]
-        public void deleteIDTest() {  
-            FileId.addID(path, 1);
-            var actualId = FileId.getID(path);
+        public void deleteIDTest() {
+            var fileID = new FileIdController();
+            fileID.addID(path, 1);
+            var actualId = fileID.getID(path);
             Assert.AreEqual("###0000000001###", actualId);
 
-            FileId.deleteID(path);
-            var shouldBeNull = FileId.getID(path);
+            fileID.deleteID(path);
+            var shouldBeNull = fileID.getID(path);
             Assert.IsNull(shouldBeNull);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void exceptionCheck() {
+            var fileID = new FileIdController();
             var nullPath = "";
-            FileId.addID(nullPath, 1);
+            fileID.addID(nullPath, 1);
         }
 
         [TestMethod]
-        public void updateIDTest() {          
-            FileId.updateID(path, 123);
-            var actualId = FileId.getID(path);
+        public void updateIDTest() {
+            var fileID = new FileIdController();
+            fileID.updateID(path, 123);
+            var actualId = fileID.getID(path);
             Assert.AreEqual("###0000000123###", actualId);         
         }
 

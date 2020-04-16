@@ -8,14 +8,14 @@ namespace FileIdCreator {
     /// create/read/update/delete bytes that represent id in the end of the file. 
     /// Id format "###0000000000###"
     /// </summary>
-    public class FileId {
-
+    public class FileIdController : IFileIdController {
+      
         /// <summary>
         /// add 16 bytes id in the end of the file
         /// </summary>
         /// <param name="path"></param>
         /// <param name="id"></param>
-        public static void addID(string path, long id) {
+        public void addID(string path, long id) {
             Guard.throwIfStringNullOrEmpty(path,nameof(path));
 
             string strID = $"###{id.ToString().PadLeft(10, '0')}###";
@@ -28,7 +28,7 @@ namespace FileIdCreator {
         /// </summary>
         /// <param name="path"></param>
         /// <returns>id or null if last 16 bytes doesn't meet the pattern of id - ###0000000000###</returns>
-        public static string getID(string path) {
+        public string getID(string path) {
             Guard.throwIfStringNullOrEmpty(path, nameof(path));
 
             using (var reader = new StreamReader(path)) {
@@ -48,7 +48,7 @@ namespace FileIdCreator {
         /// deleting last 16 bytes of the file while they meet the pattern of id - ###0000000000###
         /// </summary>
         /// <param name="path"></param>
-        public static void deleteID(string path) {
+        public void deleteID(string path) {
             Guard.throwIfStringNullOrEmpty(path, nameof(path));
 
             while (getID(path) != null) {
@@ -61,14 +61,14 @@ namespace FileIdCreator {
         /// add 16 bytes id in the end of the file
         /// </summary>
         /// <param name="path"></param>
-        public static void updateID(string path, long id) {
+        public void updateID(string path, long id) {
             Guard.throwIfStringNullOrEmpty(path, nameof(path));
 
             deleteID(path);
             addID(path, id);
         }     
 
-        private static bool isID(string id) {
+        private bool isID(string id) {
             return id != null && id.Length == 16 && id.StartsWith("###") && id.EndsWith("###") && id.Substring(3, 10).ToList().TrueForAll((x) => int.TryParse(x.ToString(), out int num));
         }
 
@@ -77,7 +77,7 @@ namespace FileIdCreator {
         /// </summary>
         /// <param name="path"></param>
         /// <param name="bytesNumber">number of bytes to delete</param>
-        private static void deleteBytes(string path, int bytesNumber) {
+        private void deleteBytes(string path, int bytesNumber) {
             Guard.throwIfStringNullOrEmpty(path, nameof(path));
 
             var fi = new FileInfo(path);
@@ -92,7 +92,7 @@ namespace FileIdCreator {
         /// </summary>
         /// <param name="path"></param>
         /// <param name="bytes"></param>
-        private static void appendAllBytes(string path, byte[] bytes) {
+        private void appendAllBytes(string path, byte[] bytes) {
             Guard.throwIfStringNullOrEmpty(path, nameof(path));
             Guard.throwIfNull(bytes, nameof(bytes));
 
@@ -100,5 +100,6 @@ namespace FileIdCreator {
                 stream.Write(bytes, 0, bytes.Length);
             }
         }
+       
     }
 }
