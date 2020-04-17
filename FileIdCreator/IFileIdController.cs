@@ -1,5 +1,5 @@
 ﻿namespace FileIdCreator {
-    interface IFileIdController {
+    public interface IFileIdController {
         void addID(string path, long id);
         string getID(string path);
         void deleteID(string path);
